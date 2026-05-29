@@ -37,7 +37,6 @@ This catalog is a Flutter package. The test files live alongside the production 
 To run every test in the catalog:
 
 ```bash
-cd flutter-unit-testing-catalog
 flutter pub get
 flutter test $(find . -name "*_test.dart" -not -path "*/build/*")
 ```
@@ -84,48 +83,48 @@ You can read the chapters in order to see one application's surface area grow, o
 
 ### Foundations
 
-| # | Chapter | Status |
-|---|---------|--------|
-| — | [Introduction: The Message Metaphor](intro/README.md) | Draft |
+| # | Chapter |
+|---|---------|
+| — | [Introduction: The Message Metaphor](intro/README.md) |
 
 ### Core Message Patterns
 
-| # | Chapter | Status |
-|---|---------|--------|
-| 1 | [Receiving a Message and Responding](chapter01_receiving_responding/README.md) | Draft |
-| 2 | [Changing State](chapter02_changing_state/README.md) | Draft |
-| 3 | [Sending Out More Messages](chapter03_sending_out_more_messages/README.md) | Draft |
-| 4 | [Side Effects — Completeness of Outgoing Calls](chapter04_side_effects/README.md) | Draft |
+| # | Chapter |
+|---|---------|
+| 1 | [Receiving a Message and Responding](chapter01_receiving_responding/README.md) |
+| 2 | [Changing State](chapter02_changing_state/README.md) |
+| 3 | [Sending Out More Messages](chapter03_sending_out_more_messages/README.md) |
+| 4 | [Side Effects — Completeness of Outgoing Calls](chapter04_side_effects/README.md) |
 
 ### Reliability Patterns
 
-| # | Chapter | Status |
-|---|---------|--------|
-| 5 | [Exceptions & Error Handling](chapter05_exceptions/README.md) | Draft |
-| — | ↳ [E1: Exception Throwing](chapter05_exceptions/e01_exception_throwing/README.md) | Draft |
-| — | ↳ [E2: Exception Types](chapter05_exceptions/e02_exception_types/README.md) | Draft |
-| — | ↳ [E3: Error Messages](chapter05_exceptions/e03_error_messages/README.md) | Draft |
-| — | ↳ [E4: Exception Handling](chapter05_exceptions/e04_exception_handling/README.md) | Draft |
-| — | ↳ [E5: State After Exception](chapter05_exceptions/e05_state_after_exception/README.md) | Draft |
-| — | ↳ [E6: Fallback Mechanisms](chapter05_exceptions/e06_fallback_mechanisms/README.md) | Draft |
-| — | ↳ [E7: Input Validation](chapter05_exceptions/e07_input_validation/README.md) | Draft |
-| — | ↳ [E8: Boundary Conditions](chapter05_exceptions/e08_boundary_conditions/README.md) | Draft |
-| — | ↳ [E9: Resource Cleanup](chapter05_exceptions/e09_resource_cleanup/README.md) | Draft |
-| 6 | [Adversarial Inputs](chapter06_adversarial_inputs/README.md) | Draft |
-| 7 | [Initial State and Setup](chapter07_initial_state_and_setup/README.md) | Draft |
-| 8 | [Concurrency and Timing](chapter08_concurrency_and_timing/README.md) | Draft |
-| 9 | [Idempotence](chapter09_idempotence/README.md) | Draft |
+| # | Chapter |
+|---|---------|
+| 5 | [Exceptions & Error Handling](chapter05_exceptions/README.md) |
+| — | ↳ [E1: Exception Throwing](chapter05_exceptions/e01_exception_throwing/README.md) |
+| — | ↳ [E2: Exception Types](chapter05_exceptions/e02_exception_types/README.md) |
+| — | ↳ [E3: Error Messages](chapter05_exceptions/e03_error_messages/README.md) |
+| — | ↳ [E4: Exception Handling](chapter05_exceptions/e04_exception_handling/README.md) |
+| — | ↳ [E5: State After Exception](chapter05_exceptions/e05_state_after_exception/README.md) |
+| — | ↳ [E6: Fallback Mechanisms](chapter05_exceptions/e06_fallback_mechanisms/README.md) |
+| — | ↳ [E7: Input Validation](chapter05_exceptions/e07_input_validation/README.md) |
+| — | ↳ [E8: Boundary Conditions](chapter05_exceptions/e08_boundary_conditions/README.md) |
+| — | ↳ [E9: Resource Cleanup](chapter05_exceptions/e09_resource_cleanup/README.md) |
+| 6 | [Adversarial Inputs](chapter06_adversarial_inputs/README.md) |
+| 7 | [Initial State and Setup](chapter07_initial_state_and_setup/README.md) |
+| 8 | [Concurrency and Timing](chapter08_concurrency_and_timing/README.md) |
+| 9 | [Idempotence](chapter09_idempotence/README.md) |
 
 ### Specialized Patterns
 
-| # | Chapter | Status |
-|---|---------|--------|
-| 10 | [Memory and Resource Management](chapter10_memory_and_resources/README.md) | Draft |
-| 11 | [Third-Party Integration](chapter11_third_party_integration/README.md) | Draft |
-| 12 | [Fallbacks and Redundancies](chapter12_fallbacks_and_redundancies/README.md) | Draft |
-| 13 | [Performance and Timing](chapter13_performance_and_timing/README.md) | Draft |
-| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) | Draft |
-| 15 | [State Transitions](chapter15_state_transitions/README.md) | Draft |
+| # | Chapter |
+|---|---------|
+| 10 | [Memory and Resource Management](chapter10_memory_and_resources/README.md) |
+| 11 | [Third-Party Integration](chapter11_third_party_integration/README.md) |
+| 12 | [Fallbacks and Redundancies](chapter12_fallbacks_and_redundancies/README.md) |
+| 13 | [Performance and Timing](chapter13_performance_and_timing/README.md) |
+| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) |
+| 15 | [State Transitions](chapter15_state_transitions/README.md) |
 
 ---
 
