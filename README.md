@@ -153,5 +153,6 @@ Unsure how E7 differs from E8? See [validation vs boundaries](chapter05_exceptio
 - [Catalog Index](#catalog-index) — All chapters and patterns
 - [Glossary](glossary/README.md) — Definitions for every key term: stub, mock, fake, spy, SUT, observable behavior, and more.
 - [License](LICENSE) — Free to use and share. If you publish a book or similar work derived from this catalog, credit the original (name + link).
+- [Social media assets](assets/README.md) — Share images for GitHub, Twitter/X, LinkedIn, and square posts
 
 If your classes have hard-coded dependencies and you are not sure how to make them testable before applying the patterns, see [Designing for Testability](appendix/designing-for-testability.md).
