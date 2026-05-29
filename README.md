@@ -2,13 +2,70 @@
 
 > A catalog of unit testing patterns for Flutter and Dart, structured in the spirit of the Gang of Four Design Patterns.
 
+**[Introduction →](intro/README.md)** · **[Catalog Index ↓](#catalog-index)** · **[Glossary →](glossary/README.md)**
+
+Every entry is a self-contained chapter with prose and runnable Dart tests. Pick a pattern below, or read [the introduction](intro/README.md) first.
+
+---
+
+## Catalog Index
+
+Click any chapter to open its pattern — prose, production code, and tests.
+
+### Foundations
+
+| # | Chapter |
+|---|---------|
+| — | [Introduction: The Message Metaphor](intro/README.md) |
+
+### Core Message Patterns
+
+| # | Chapter | Subject |
+|---|---------|---------|
+| 1 | [Receiving a Message and Responding](chapter01_receiving_responding/README.md) | `MessageFormatter` — relative-time labels, message previews |
+| 2 | [Changing State](chapter02_changing_state/README.md) | `UnreadCounter` — badge on a conversation row |
+| 3 | [Sending Out More Messages](chapter03_sending_out_more_messages/README.md) | `ChatManager.sendMessage` calling analytics |
+| 4 | [Side Effects — Completeness of Outgoing Calls](chapter04_side_effects/README.md) | `ChatManager.sendMessage` — persist, observe, log |
+
+### Reliability Patterns
+
+| # | Chapter | Subject |
+|---|---------|---------|
+| 5 | [Exceptions & Error Handling](chapter05_exceptions/README.md) | Nine error-handling patterns (E1–E9) on `ChatManager` |
+| — | ↳ [E1: Exception Throwing](chapter05_exceptions/e01_exception_throwing/README.md) | |
+| — | ↳ [E2: Exception Types](chapter05_exceptions/e02_exception_types/README.md) | |
+| — | ↳ [E3: Error Messages](chapter05_exceptions/e03_error_messages/README.md) | |
+| — | ↳ [E4: Exception Handling](chapter05_exceptions/e04_exception_handling/README.md) | |
+| — | ↳ [E5: State After Exception](chapter05_exceptions/e05_state_after_exception/README.md) | |
+| — | ↳ [E6: Fallback Mechanisms](chapter05_exceptions/e06_fallback_mechanisms/README.md) | |
+| — | ↳ [E7: Input Validation](chapter05_exceptions/e07_input_validation/README.md) | |
+| — | ↳ [E8: Boundary Conditions](chapter05_exceptions/e08_boundary_conditions/README.md) | |
+| — | ↳ [E9: Resource Cleanup](chapter05_exceptions/e09_resource_cleanup/README.md) | |
+| 6 | [Adversarial Inputs](chapter06_adversarial_inputs/README.md) | `ChatManager.receiveMessage` — out-of-order timestamps |
+| 7 | [Initial State and Setup](chapter07_initial_state_and_setup/README.md) | `ChatManager` loading message history |
+| 8 | [Concurrency and Timing](chapter08_concurrency_and_timing/README.md) | Concurrent sends + delivery receipts |
+| 9 | [Idempotence](chapter09_idempotence/README.md) | Dedup by stable `clientMessageId` |
+
+### Specialized Patterns
+
+| # | Chapter | Subject |
+|---|---------|---------|
+| 10 | [Memory and Resource Management](chapter10_memory_and_resources/README.md) | `IncomingMessageBinder` — stream subscriptions |
+| 11 | [Third-Party Integration](chapter11_third_party_integration/README.md) | `ChatService` wrapping a backend HTTP client |
+| 12 | [Fallbacks and Redundancies](chapter12_fallbacks_and_redundancies/README.md) | `MessageRepository` — remote + cache + placeholder |
+| 13 | [Performance and Timing](chapter13_performance_and_timing/README.md) | `TypingIndicator` — debounced "stopped typing" |
+| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) | `MessageSanitizer` — HTML/null-byte stripping |
+| 15 | [State Transitions](chapter15_state_transitions/README.md) | `MessageDelivery` lifecycle |
+
+All chapters share the same imagined chat app as their running example, so the catalog reads as one story. Each chapter's `code/` folder is self-contained — no cross-chapter imports required.
+
 ---
 
 ## The Idea Behind This Book
 
 Every method call is a message. An object receives a message, does something with it, and the world changes — or does not. Three things can happen when a method is called: it can **return a value**, it can **change internal state**, or it can **send messages to other objects**. Everything in unit testing flows from these three primitives.
 
-This catalog names each pattern, explains the problem that arises without it, and shows you the solution in Flutter/Dart — production class first, test second. Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need.
+This catalog names each pattern, explains the problem that arises without it, and shows you the solution in Flutter/Dart — production class first, test second. Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need from the [Catalog Index](#catalog-index) above.
 
 ---
 
@@ -51,83 +108,6 @@ Dependencies are declared in `pubspec.yaml`. Run `flutter pub get` once before r
 
 ---
 
-## Running Example: A Chat App
-
-Every chapter is anchored to the same domain — a small chat application — so the catalog reads as one continuous story instead of fifteen disconnected examples. Each chapter still has its own self-contained `code/` folder; the spine lives in the names and the prose, not in cross-chapter imports.
-
-The chat-domain subject for each chapter:
-
-| # | Chapter | Subject |
-|---|---------|---------|
-| 1 | Receiving and Responding | `MessageFormatter` (relative-time labels, message previews) |
-| 2 | Changing State | `UnreadCounter` (badge on a conversation row) |
-| 3 | Sending Out More Messages | `ChatManager.sendMessage` calling analytics |
-| 4 | Side Effects | `ChatManager.sendMessage` (persist + observe + log) |
-| 5 | Exceptions & Error Handling | `ChatManager` variants for each E1–E9 entry |
-| 6 | Adversarial Inputs | `ChatManager.receiveMessage` with out-of-order timestamps |
-| 7 | Initial State and Setup | `ChatManager` loading message history |
-| 8 | Concurrency and Timing | `ChatManager` racing concurrent sends + delivery receipts |
-| 9 | Idempotence | `ChatManager` dedup by stable `clientMessageId` |
-| 10 | Memory and Resource Management | `IncomingMessageBinder` (stream subscriptions for a chat screen) |
-| 11 | Third-Party Integration | `ChatService` wrapping a backend HTTP client |
-| 12 | Fallbacks and Redundancies | `MessageRepository` (remote + cache + placeholder) |
-| 13 | Performance and Timing | `TypingIndicator` (debounced "stopped typing" notification) |
-| 14 | Security and Input Validation | `MessageSanitizer` (HTML/null-byte stripping + length cap) |
-| 15 | State Transitions | `MessageDelivery` lifecycle (`Drafting → Sending → Sent → Delivered → Read`, with `fail` from `Sending`/`Sent`, `cancel` from `Sending`, and `retry` from `Failed`) |
-
-You can read the chapters in order to see one application's surface area grow, or jump to any chapter for a self-contained pattern.
-
----
-
-## Catalog Index
-
-### Foundations
-
-| # | Chapter |
-|---|---------|
-| — | [Introduction: The Message Metaphor](intro/README.md) |
-
-### Core Message Patterns
-
-| # | Chapter |
-|---|---------|
-| 1 | [Receiving a Message and Responding](chapter01_receiving_responding/README.md) |
-| 2 | [Changing State](chapter02_changing_state/README.md) |
-| 3 | [Sending Out More Messages](chapter03_sending_out_more_messages/README.md) |
-| 4 | [Side Effects — Completeness of Outgoing Calls](chapter04_side_effects/README.md) |
-
-### Reliability Patterns
-
-| # | Chapter |
-|---|---------|
-| 5 | [Exceptions & Error Handling](chapter05_exceptions/README.md) |
-| — | ↳ [E1: Exception Throwing](chapter05_exceptions/e01_exception_throwing/README.md) |
-| — | ↳ [E2: Exception Types](chapter05_exceptions/e02_exception_types/README.md) |
-| — | ↳ [E3: Error Messages](chapter05_exceptions/e03_error_messages/README.md) |
-| — | ↳ [E4: Exception Handling](chapter05_exceptions/e04_exception_handling/README.md) |
-| — | ↳ [E5: State After Exception](chapter05_exceptions/e05_state_after_exception/README.md) |
-| — | ↳ [E6: Fallback Mechanisms](chapter05_exceptions/e06_fallback_mechanisms/README.md) |
-| — | ↳ [E7: Input Validation](chapter05_exceptions/e07_input_validation/README.md) |
-| — | ↳ [E8: Boundary Conditions](chapter05_exceptions/e08_boundary_conditions/README.md) |
-| — | ↳ [E9: Resource Cleanup](chapter05_exceptions/e09_resource_cleanup/README.md) |
-| 6 | [Adversarial Inputs](chapter06_adversarial_inputs/README.md) |
-| 7 | [Initial State and Setup](chapter07_initial_state_and_setup/README.md) |
-| 8 | [Concurrency and Timing](chapter08_concurrency_and_timing/README.md) |
-| 9 | [Idempotence](chapter09_idempotence/README.md) |
-
-### Specialized Patterns
-
-| # | Chapter |
-|---|---------|
-| 10 | [Memory and Resource Management](chapter10_memory_and_resources/README.md) |
-| 11 | [Third-Party Integration](chapter11_third_party_integration/README.md) |
-| 12 | [Fallbacks and Redundancies](chapter12_fallbacks_and_redundancies/README.md) |
-| 13 | [Performance and Timing](chapter13_performance_and_timing/README.md) |
-| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) |
-| 15 | [State Transitions](chapter15_state_transitions/README.md) |
-
----
-
 ## What This Catalog Deliberately Does Not Cover
 
 The patterns in this book are scoped to **unit tests for plain Dart classes** — the layer where business logic lives. Several adjacent categories of testing are intentionally outside that scope. They are not less important; they answer different questions and use different oracles. Naming them here is meant to set expectations, not to dismiss them.
@@ -150,26 +130,27 @@ The patterns in this book are scoped to **unit tests for plain Dart classes** �
 
 ## Exception Sub-Catalog Quick Reference
 
-Chapter 5 is itself a mini-catalog. The nine entries cover every aspect of testing error handling:
+[Chapter 5](chapter05_exceptions/README.md) is itself a mini-catalog. The nine entries in the [Catalog Index](#catalog-index) cover every aspect of testing error handling:
 
-| Entry | What It Tests |
-|---|---|
-| E1 | That an exception is thrown at all |
-| E2 | That the correct exception *type* is thrown |
-| E3 | That the exception carries the correct *message* |
-| E4 | That the calling code *handles* the exception correctly |
-| E5 | That the object is in a consistent *state* after an exception |
-| E6 | That a *fallback* path is taken when the primary path fails |
-| E7 | That *invalid inputs* are rejected before reaching business logic |
-| E8 | That the system behaves correctly at *boundary values* |
-| E9 | That *resources* are released even when an exception occurs |
+| Entry | What It Tests | Read |
+|---|---|---|
+| E1 | That an exception is thrown at all | [→](chapter05_exceptions/e01_exception_throwing/README.md) |
+| E2 | That the correct exception *type* is thrown | [→](chapter05_exceptions/e02_exception_types/README.md) |
+| E3 | That the exception carries the correct *message* | [→](chapter05_exceptions/e03_error_messages/README.md) |
+| E4 | That the calling code *handles* the exception correctly | [→](chapter05_exceptions/e04_exception_handling/README.md) |
+| E5 | That the object is in a consistent *state* after an exception | [→](chapter05_exceptions/e05_state_after_exception/README.md) |
+| E6 | That a *fallback* path is taken when the primary path fails | [→](chapter05_exceptions/e06_fallback_mechanisms/README.md) |
+| E7 | That *invalid inputs* are rejected before reaching business logic | [→](chapter05_exceptions/e07_input_validation/README.md) |
+| E8 | That the system behaves correctly at *boundary values* | [→](chapter05_exceptions/e08_boundary_conditions/README.md) |
+| E9 | That *resources* are released even when an exception occurs | [→](chapter05_exceptions/e09_resource_cleanup/README.md) |
 
-See [helper: validation vs boundaries](chapter05_exceptions/e07_input_validation/helper_validation_vs_boundary.md).
+Unsure how E7 differs from E8? See [validation vs boundaries](chapter05_exceptions/e07_input_validation/helper_validation_vs_boundary.md).
 
 ---
 
 ## Reference
 
+- [Catalog Index](#catalog-index) — All chapters and patterns
 - [Glossary](glossary/README.md) — Definitions for every key term: stub, mock, fake, spy, SUT, observable behavior, and more.
 - [License](LICENSE) — Free to use and share. If you publish a book or similar work derived from this catalog, credit the original (name + link).
 
