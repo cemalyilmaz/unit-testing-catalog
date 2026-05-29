@@ -8,9 +8,23 @@ Brand images for sharing the catalog on GitHub and social platforms.
 | [social-preview-1280x640.png](social-preview-1280x640.png) | 1280×640 | Master PNG (lossless, under GitHub's 1 MB limit) |
 | [social-preview-square-github.jpg](social-preview-square-github.jpg) | 1200×1200 | Instagram, Mastodon, LinkedIn square posts |
 
-## GitHub social preview (one-time upload)
+## GitHub social preview
 
-GitHub has no public API for this setting. Upload manually:
+GitHub has **no public API** for this setting — upload goes through the web UI.
+
+### Option A — one-command script (recommended)
+
+From the repo root:
+
+```bash
+npm install playwright
+npx playwright install chrome
+node scripts/upload-social-preview.mjs
+```
+
+A Chrome window opens. Sign in to GitHub if prompted; the script uploads [`social-preview-github.jpg`](social-preview-github.jpg) and saves the session for next time.
+
+### Option B — manual upload
 
 1. Open [repository Settings → General](https://github.com/cemalyilmaz/unit-testing-catalog/settings)
 2. Scroll to **Social preview** → **Edit** → **Upload an image…**

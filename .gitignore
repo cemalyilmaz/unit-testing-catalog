@@ -23,6 +23,10 @@ coverage/
 *.iml
 .vscode/
 .cursor/
+.github/playwright-auth.json
+
+# Node (upload script)
+node_modules/
 
 # macOS
 .DS_Store
