@@ -1,9 +1,17 @@
-Copyright (c) 2026 Cemal Yilmaz. All rights reserved.
+Copyright (c) 2026 Cemal Yilmaz
 
-No part of this work may be reproduced, copied, modified, merged,
-published, distributed, sublicensed, or sold in any form or by any
-means without the prior written permission of the copyright holder.
+You may use, copy, modify, and distribute this catalog and its example
+code for any purpose without asking permission.
 
-You may read this catalog on its official repository and run the
-included example code locally for personal learning. Any other use
-requires explicit permission from the author.
+If you publish a book, course, or similar work that is substantially
+derived from this catalog, you must clearly credit the original:
+
+  Flutter Unit Testing Catalog
+  https://github.com/cemalyilmaz/unit-testing-catalog
+  Copyright (c) 2026 Cemal Yilmaz
+
+That credit must appear in the published work itself — for example in
+acknowledgments, a preface, or a bibliography — not only in source
+code comments.
+
+Everything else is unrestricted.

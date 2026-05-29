@@ -172,6 +172,6 @@ See [helper: validation vs boundaries](chapter05_exceptions/e07_input_validation
 ## Reference
 
 - [Glossary](glossary/README.md) — Definitions for every key term: stub, mock, fake, spy, SUT, observable behavior, and more.
-- [License](LICENSE) — All rights reserved. Reading and local learning use of the example code is permitted; copying or redistribution is not.
+- [License](LICENSE) — Free to use and share. If you publish a book or similar work derived from this catalog, credit the original (name + link).
 
 If your classes have hard-coded dependencies and you are not sure how to make them testable before applying the patterns, see [Designing for Testability](appendix/designing-for-testability.md).
