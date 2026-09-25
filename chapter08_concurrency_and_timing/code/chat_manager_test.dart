@@ -54,6 +54,10 @@ void main() {
       manager = ChatManager(service: stubService)..delegate = mockDelegate;
     });
 
+    tearDown(() async {
+      await manager.dispose();
+    });
+
     test('reports active send while in progress', () {
       manager.sendMessage('msg-1', 'hello');
 
@@ -114,6 +118,30 @@ void main() {
 
       expect(manager.isSending('msg-1'), isFalse);
       expect(manager.deliveryStatusFor('msg-1'), isNull);
+    });
+
+    test('times out if the server never acknowledges a send', () async {
+      // Do not complete the stub — simulate a hanging send.
+      final send = manager.sendMessage('msg-1', 'hello');
+
+      await expectLater(
+        send.timeout(const Duration(milliseconds: 100)),
+        throwsA(isA<TimeoutException>()),
+      );
+    });
+
+    test('emits delivery receipts as a stream', () async {
+      final events = <DeliveryStatus>[];
+      manager.deliveryStream('msg-1').listen(events.add);
+
+      final send = manager.sendMessage('msg-1', 'hello');
+      stubService.completeSend('msg-1');
+      await send;
+      manager.markDelivered('msg-1', DeliveryStatus.delivered);
+      manager.markDelivered('msg-1', DeliveryStatus.read);
+
+      await Future.delayed(Duration.zero); // flush microtasks
+      expect(events, equals([DeliveryStatus.delivered, DeliveryStatus.read]));
     });
   });
 }
