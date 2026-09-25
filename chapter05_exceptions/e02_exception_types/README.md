@@ -131,7 +131,7 @@ void main() {
 
 - [E1 — Exception Throwing](../e01_exception_throwing/README.md): Confirming that *something* is thrown.
 - [E3 — Error Messages](../e03_error_messages/README.md): Asserting the human-readable message on the exception.
-- [helper: Why E2 and E3 are separate tests](helper_is_in_e03.md)
+- [Helper: Why E2 and E3 are separate tests](helper_type_vs_message.md)
 
 ---
 

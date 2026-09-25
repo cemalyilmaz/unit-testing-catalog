@@ -177,5 +177,5 @@ Apply these four steps to any class that has a hard-coded collaborator before wr
 
 ## Where to Go Next
 
-- [Chapter 4 — Sending Out More Messages](../chapter04_side_effects/../chapter03_sending_out_more_messages/README.md): The pattern this design enables.
+- [Chapter 3 — Sending Out More Messages](../chapter03_sending_out_more_messages/README.md): The pattern this design enables.
 - [Glossary](../glossary/README.md): Definitions for mock, stub, seam, and collaborator.

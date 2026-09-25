@@ -1,5 +1,7 @@
 # Chapter 3: Sending Out More Messages
 
+> In the chat app, this is the analytics hook on the send button: `sendMessage` returns nothing and changes nothing the UI can see — its only observable effect is the event it hands to the analytics API.
+
 ---
 
 ## Intent

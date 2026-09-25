@@ -1,5 +1,7 @@
 # Chapter 6: Adversarial Inputs
 
+> In the chat app, this is the inbound message list: the network delivers messages in whatever order it likes, and `receiveMessage` has to keep the conversation chronological no matter how out of order, duplicated, or sparse the arrivals are.
+
 ---
 
 ## Intent
