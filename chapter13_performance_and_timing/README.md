@@ -24,7 +24,7 @@ More fundamentally, removing the `Timer` to make the test faster removes the beh
 
 You want to verify timing-dependent behavior — fires after N ms, does not fire before, resets on new input — but real `Timer` calls make tests slow and non-deterministic. A test that passes today because the machine was fast enough will fail tomorrow for the opposite reason.
 
-You want deterministic tests that complete in milliseconds — but replacing `Timer` with `Future.value()` removes the temporal behavior you are testing. `fakeAsync` from `flutter_test` resolves the tension: it replaces Dart's clock with a controllable substitute. The production code continues to use real `Timer`; in tests, `fakeAsync` intercepts those timers and only fires them when you explicitly advance the clock.
+You want deterministic tests that complete in milliseconds — but replacing `Timer` with `Future.value()` removes the temporal behavior you are testing. `fakeAsync` from `package:fake_async` resolves the tension: it replaces Dart's clock with a controllable substitute. The production code continues to use real `Timer`; in tests, `fakeAsync` intercepts those timers and only fires them when you explicitly advance the clock.
 
 ---
 

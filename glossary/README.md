@@ -234,7 +234,7 @@ The execution path through code where all inputs are valid, all services are ava
 
 ### Error Path (Sad Path)
 
-Any execution path that involves invalid inputs, service failures, exceptions, or edge conditions. Testing the error path is what Chapter 4 and its sub-entries are about.
+Any execution path that involves invalid inputs, service failures, exceptions, or edge conditions. Testing the error path is what Chapter 5 and its sub-entries are about.
 
 ---
 
