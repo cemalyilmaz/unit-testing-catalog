@@ -24,7 +24,9 @@ More fundamentally, removing the `Timer` to make the test faster removes the beh
 
 You want to verify timing-dependent behavior — fires after N ms, does not fire before, resets on new input — but real `Timer` calls make tests slow and non-deterministic. A test that passes today because the machine was fast enough will fail tomorrow for the opposite reason.
 
-You want deterministic tests that complete in milliseconds — but replacing `Timer` with `Future.value()` removes the temporal behavior you are testing. `fakeAsync` from `package:fake_async` resolves the tension: it replaces Dart's clock with a controllable substitute. The production code continues to use real `Timer`; in tests, `fakeAsync` intercepts those timers and only fires them when you explicitly advance the clock.
+You want deterministic tests that complete in milliseconds — but replacing `Timer` with `Future.value()` removes the temporal behavior you are testing. The resolution is to make time itself controllable: the test, not the wall clock, decides when time passes.
+
+There are two ways to get there, and which one fits depends on the language. Where the runtime lets a test intercept timers, production code keeps using the real timer and the test advances a fake clock. Where it does not, production code receives a clock as a dependency and the test injects one it can advance by hand. Dart offers the first: `fakeAsync` from `package:fake_async` replaces Dart's clock with a controllable substitute, intercepts the `Timer`s production code creates, and only fires them when you explicitly advance the clock.
 
 ---
 
@@ -116,7 +118,7 @@ void main() {
 
 - `fakeAsync` lives in `package:fake_async`. Add `fake_async` to `dev_dependencies` in `pubspec.yaml` and `import 'package:fake_async/fake_async.dart';` in the test file.
 - `fake.elapse()` advances the clock by the given duration and fires all timers scheduled within it. Use `fake.flushMicrotasks()` if you need to drain the microtask queue between elapse calls.
-- The `TypingIndicator` uses `Timer` from `dart:async`. Do not replace it with a custom clock abstraction just for testability — `fakeAsync` makes that unnecessary.
+- The `TypingIndicator` uses `Timer` from `dart:async` directly. In Dart there is no need to add a clock abstraction just for testability — `fakeAsync` intercepts the real `Timer`. That is a property of Dart, not of the pattern. In Swift, which has no equivalent interception, inject a `Clock` (Swift 5.7+) into the indicator and advance a test clock — for example `TestClock` from the swift-clocks package. Kotlin's `kotlinx-coroutines-test` works like `fakeAsync`: `runTest` runs on virtual time and `advanceTimeBy` moves it.
 - For a `RetryPolicy` with exponential backoff (`1s, 2s, 4s, 8s...`), the same pattern applies: call `fake.elapse(Duration(seconds: 1))` to fire the first retry, then `fake.elapse(Duration(seconds: 2))` for the second, and so on.
 
 ---

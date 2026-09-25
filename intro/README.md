@@ -28,6 +28,31 @@ Testing these three things gives you complete coverage of a method's observable 
 
 ---
 
+## Which Outgoing Messages to Verify
+
+The third question needs one refinement. Outgoing messages come in two kinds:
+
+- A **query** asks another object for something and changes nothing — `cache.getCachedMessage(id)`, `network.get('/messages')`.
+- A **command** tells another object to do something that has an effect — `analytics.logEvent(...)`, `storage.persist(...)`, `network.post(...)`.
+
+**Verify outgoing commands. Do not verify outgoing queries.**
+
+A command's effect happens somewhere else, so the only place a unit test can see it is at the boundary: record the call with a mock and assert it was made with the right arguments. A query's effect shows up in your own object — in what it returns or how its state changes — so assert there instead, and give the collaborator a stub that simply answers. Asserting that a query was made ties the test to *how* the object gets its information rather than *what* it does with it, and the test breaks the moment the implementation caches, batches, or reorders its lookups.
+
+The full rule, message by message:
+
+| Message | What the test asserts on | Chapter |
+|---|---|---|
+| Incoming query | The return value | 1 |
+| Incoming command | The object's public state afterwards | 2 |
+| Outgoing command | The call itself, recorded by a mock | 3, 4 |
+| Outgoing query | Nothing — stub it, then assert on what the object does with the answer | 11, 12 |
+| Message to self (private method) | Nothing — it is covered through the public messages that use it | — |
+
+[Chapter 11](../chapter11_third_party_integration/README.md) shows the rule in a single file: `StubNetworkService` answers `get` and is never asserted on, while `MockNetworkService` records `post` and is.
+
+---
+
 ## What This Catalog Does Not Cover
 
 This catalog describes *what* to verify and *how* to structure the test for each category of behavior. The question of *when* to write tests relative to the production code — before (test-first), after (test-last), or interleaved — is a workflow decision that sits outside the scope of this catalog. Different teams and practitioners make different choices here, and the patterns work regardless of that choice.
@@ -37,6 +62,14 @@ This catalog describes *what* to verify and *how* to structure the test for each
 ## Why to Test
 
 By verifying these behaviors independently, you ensure that each class fulfills its contract precisely. If every class does what it promises, the system composed of those classes is reliable. Unit tests are the mechanism for making that promise verifiable and automatic.
+
+---
+
+## A Note on Language
+
+The patterns in this catalog are not about Dart. Dart and Flutter are the reference implementation — the language the catalog happens to be written in — not its subject. Every Intent, Problem, Forces, and Consequences section is written to hold in any object-oriented language; only the Solution code and the Implementation Notes are Dart-specific, the same split the Gang of Four made between their patterns and their C++ and Smalltalk samples.
+
+Most chapters translate directly. A few map onto different mechanics — Dart's `Completer` becomes a checked continuation in Swift, Dart's sealed classes become enums with associated values, Dart's `fakeAsync` becomes an injected clock. Where a chapter's advice depends on a Dart feature rather than on the pattern, its Implementation Notes say so.
 
 ---
 
@@ -126,6 +159,18 @@ The arrows above describe the *app's* shape — not chapter dependencies. Each c
 | `MessageDelivery` | Sealed state machine for an outbound message's lifecycle | 15 |
 
 When two chapters both feature a class called `ChatManager`, each chapter's version is allowed to differ — the class is shown configured for *that* chapter's concern. The chapter prose names what is included and what is left out.
+
+---
+
+## Origins
+
+The core ideas in this catalog have earlier, better-known sources, and they deserve to be named — whether the debt was taken directly or absorbed over years of reading.
+
+- **The message metaphor** comes from object-oriented programming's roots in Smalltalk, where calling a method *is* sending a message to an object.
+- **Sandi Metz** turned that metaphor into a testing discipline. Her talk *The Magic Tricks of Testing* (RailsConf 2013) and the testing chapter of *Practical Object-Oriented Design in Ruby* sort every message by direction (incoming or outgoing) and kind (query or command) and state precisely which ones a test should verify. The three questions above and the rule for outgoing messages follow the same line of thought.
+- **Gerard Meszaros**'s *xUnit Test Patterns* (Addison-Wesley, 2007) is the earlier catalog of test patterns in the Gang of Four tradition, and the source of the test-double vocabulary — stub, mock, fake, spy — that the [Glossary](../glossary/README.md) uses.
+
+What this catalog adds is a second layer on top of that foundation: fifteen recurring concerns — side effects, errors, concurrency, idempotence, resource cleanup, fallbacks, state machines — each worked through the three questions against one shared example.
 
 ---
 

@@ -199,6 +199,8 @@ class SpyLogger implements Logger {
 | Does the collaborator need real (but simplified) behavior? | Fake |
 | Do you need real behavior *and* call recording? | Spy |
 
+The same split follows from the message rule in the [Introduction](../intro/README.md#which-outgoing-messages-to-verify): stub the collaborators your object *queries*, mock the ones it *commands*.
+
 If in doubt: start with a hand-rolled stub or mock. Only reach for `mockito`-generated doubles when the collaborator interface is large.
 
 ---

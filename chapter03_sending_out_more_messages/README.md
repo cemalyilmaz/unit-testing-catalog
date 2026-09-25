@@ -121,6 +121,7 @@ The mock implements `AnalyticsApi` and records whatever it is called with. The t
 
 - In Dart, implement the abstract class with `implements`, not `extends` — this forces the mock to implement every method and is more explicit about intent.
 - Separate assertions: one `test()` for the event name, one for the parameters. If both fail together, the single-assertion approach pinpoints which part broke.
+- Verify outgoing *commands* — calls that make something happen, like `logEvent`. Do not assert on outgoing *queries* — calls that only fetch an answer; stub them and assert on what the subject does with the answer. See [Which Outgoing Messages to Verify](../intro/README.md#which-outgoing-messages-to-verify).
 - For heavier mocking needs, see the `mockito` package documentation and run `flutter pub run build_runner build` to generate mock classes.
 
 ---
