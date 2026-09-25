@@ -1,6 +1,6 @@
 # Flutter Unit Testing Catalog
 
-> A catalog of unit testing patterns for Flutter and Dart, structured in the spirit of the Gang of Four Design Patterns.
+> A catalog of unit testing patterns, structured in the spirit of the Gang of Four Design Patterns. Reference implementation in Dart and Flutter.
 
 **[Introduction →](intro/README.md)** · **[Catalog Index ↓](#catalog-index)** · **[Glossary →](glossary/README.md)**
 
@@ -65,7 +65,9 @@ All chapters share the same imagined chat app as their running example, so the c
 
 Every method call is a message. An object receives a message, does something with it, and the world changes — or does not. Three things can happen when a method is called: it can **return a value**, it can **change internal state**, or it can **send messages to other objects**. Everything in unit testing flows from these three primitives.
 
-This catalog names each pattern, explains the problem that arises without it, and shows you the solution in Flutter/Dart — production class first, test second. Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need from the [Catalog Index](#catalog-index) above.
+This catalog names each pattern, explains the problem that arises without it, and shows the solution in a reference implementation — Dart and Flutter, production class first, test second. The patterns themselves are language-independent: the same catalog could be written in Swift, Kotlin, or C# by rewriting only the code and the Implementation Notes (see [A Note on Language](intro/README.md#a-note-on-language)). Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need from the [Catalog Index](#catalog-index) above.
+
+The core idea builds on earlier work, most directly Sandi Metz's message-based approach to testing and Gerard Meszaros's *xUnit Test Patterns*. The [Introduction](intro/README.md#origins) credits both.
 
 ---
 
