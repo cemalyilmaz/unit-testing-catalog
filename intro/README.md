@@ -155,7 +155,7 @@ The arrows above describe the *app's* shape — not chapter dependencies. Each c
 | `ChatService` | Wraps the backend HTTP/SDK boundary | 11 |
 | `MessageRepository` | Remote + cache + placeholder fallback for a single message | 12 |
 | `TypingIndicator` | Debounces the "stopped typing" notification | 13 |
-| `MessageSanitizer` | Strips HTML/control characters from message bodies | 14 |
+| `MessageSanitizer` | Strips markup and null bytes, then entity-encodes message bodies | 14 |
 | `MessageDelivery` | Sealed state machine for an outbound message's lifecycle | 15 |
 
 When two chapters both feature a class called `ChatManager`, each chapter's version is allowed to differ — the class is shown configured for *that* chapter's concern. The chapter prose names what is included and what is left out.

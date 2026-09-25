@@ -1,5 +1,6 @@
 # E9: Resource Cleanup
 
+> In the chat app, the file handle opened to read an attachment must be closed even when the send throws. Leaked handles accumulate invisibly until the app crashes.
 ---
 
 ## Intent

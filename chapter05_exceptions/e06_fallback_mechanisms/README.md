@@ -1,5 +1,6 @@
 # E6: Fallback Mechanisms
 
+> In the chat app, a send attempted while offline is queued for later delivery, not dropped. The fallback branch never runs on a healthy development network — unless a test forces it to.
 ---
 
 ## Intent

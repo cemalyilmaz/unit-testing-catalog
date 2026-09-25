@@ -1,5 +1,6 @@
 # E3: Error Messages
 
+> In the chat app, this is the text a user actually reads when a send is rejected — and the line a developer greps for in the logs. The type is for code; the message is for people.
 ---
 
 ## Intent

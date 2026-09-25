@@ -1,5 +1,6 @@
 # E4: Exception Handling
 
+> In the chat app, this is the moment prohibited content is caught: `ChatManager` absorbs the error and must notify the user instead of crashing. Catching the exception is half the contract — responding to it is the other half.
 ---
 
 ## Intent

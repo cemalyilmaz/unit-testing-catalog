@@ -8,6 +8,16 @@ Every entry is a self-contained chapter with prose and runnable Dart tests. Pick
 
 ---
 
+## The Idea Behind This Book
+
+Every method call is a message. An object receives a message, does something with it, and the world changes — or does not. Three things can happen when a method is called: it can **return a value**, it can **change internal state**, or it can **send messages to other objects**. Everything in unit testing flows from these three primitives.
+
+This catalog names each pattern, explains the problem that arises without it, and shows the solution in a reference implementation — Dart and Flutter, production class first, test second. The patterns themselves are language-independent: the same catalog could be written in Swift, Kotlin, or C# by rewriting only the code and the Implementation Notes (see [A Note on Language](intro/README.md#a-note-on-language)). Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need from the [Catalog Index](#catalog-index) below.
+
+The core idea builds on earlier work, most directly Sandi Metz's message-based approach to testing and Gerard Meszaros's *xUnit Test Patterns*. The [Introduction](intro/README.md#origins) credits both.
+
+---
+
 ## Catalog Index
 
 Click any chapter to open its pattern — prose, production code, and tests.
@@ -54,20 +64,10 @@ Click any chapter to open its pattern — prose, production code, and tests.
 | 11 | [Third-Party Integration](chapter11_third_party_integration/README.md) | `ChatService` wrapping a backend HTTP client |
 | 12 | [Fallbacks and Redundancies](chapter12_fallbacks_and_redundancies/README.md) | `MessageRepository` — remote + cache + placeholder |
 | 13 | [Performance and Timing](chapter13_performance_and_timing/README.md) | `TypingIndicator` — debounced "stopped typing" |
-| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) | `MessageSanitizer` — HTML/null-byte stripping |
+| 14 | [Security and Input Validation](chapter14_security_and_input_validation/README.md) | `MessageSanitizer` — markup stripping + HTML entity encoding |
 | 15 | [State Transitions](chapter15_state_transitions/README.md) | `MessageDelivery` lifecycle |
 
 All chapters share the same imagined chat app as their running example, so the catalog reads as one story. Each chapter's `code/` folder is self-contained — no cross-chapter imports required.
-
----
-
-## The Idea Behind This Book
-
-Every method call is a message. An object receives a message, does something with it, and the world changes — or does not. Three things can happen when a method is called: it can **return a value**, it can **change internal state**, or it can **send messages to other objects**. Everything in unit testing flows from these three primitives.
-
-This catalog names each pattern, explains the problem that arises without it, and shows the solution in a reference implementation — Dart and Flutter, production class first, test second. The patterns themselves are language-independent: the same catalog could be written in Swift, Kotlin, or C# by rewriting only the code and the Implementation Notes (see [A Note on Language](intro/README.md#a-note-on-language)). Like the Gang of Four, each entry stands alone. Read them in order or jump to what you need from the [Catalog Index](#catalog-index) above.
-
-The core idea builds on earlier work, most directly Sandi Metz's message-based approach to testing and Gerard Meszaros's *xUnit Test Patterns*. The [Introduction](intro/README.md#origins) credits both.
 
 ---
 

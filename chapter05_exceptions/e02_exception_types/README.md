@@ -1,5 +1,6 @@
 # E2: Exception Types
 
+> In the chat app, callers must tell an empty-message rejection apart from a rate-limit rejection — one shows an inline hint, the other disables the send button until the limit resets. The exception *type* is what they switch on.
 ---
 
 ## Intent

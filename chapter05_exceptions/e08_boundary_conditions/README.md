@@ -1,5 +1,6 @@
 # E8: Boundary Conditions
 
+> In the chat app, message 100 of 100 must send and message 101 must not; a 10 MB attachment passes and 10 MB + one byte does not. Off-by-one bugs live exactly here.
 ---
 
 ## Intent

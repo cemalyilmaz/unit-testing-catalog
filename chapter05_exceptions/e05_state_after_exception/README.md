@@ -1,5 +1,6 @@
 # E5: State After Exception
 
+> In the chat app, hitting the rate limit must throw *and* disable the send button. An exception that leaves state half-updated is worse than no exception at all.
 ---
 
 ## Intent

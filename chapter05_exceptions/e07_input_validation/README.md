@@ -1,5 +1,6 @@
 # E7: Input Validation
 
+> In the chat app, this is the attachment picker's gatekeeper: files of the wrong type are rejected before any upload logic runs. Untested validation is validation a refactor can silently remove.
 ---
 
 ## Intent

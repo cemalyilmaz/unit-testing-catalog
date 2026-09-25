@@ -251,7 +251,7 @@ The `tearDown` in the suite calls `manager.dispose()`, which closes every stream
 
 ---
 
-## Common Pitfalls
+## Implementation Notes
 
 - **Forgetting `await`**: An async test that forgets to `await` the operation under test passes vacuously. Always `await` every `Future` in an async test.
 - **Using real timers**: Tests with `Future.delayed(Duration(seconds: 1))` are slow and flaky. Use `FakeAsync` from `package:fake_async` for timer-dependent tests.
