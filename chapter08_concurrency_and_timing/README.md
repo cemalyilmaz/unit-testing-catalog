@@ -34,6 +34,8 @@ Production code:
 
 ```dart
 // See code/chat_manager.dart
+import 'dart:async';
+
 abstract class ChatDelegate {
   void onAcknowledged(String clientId);
   void onFailed(String clientId, Exception error);
@@ -50,6 +52,7 @@ class ChatManager {
   final ChatSendingService _service;
   final Map<String, DeliveryStatus> _deliveryStatus = {};
   final Set<String> _activeSends = {};
+  final Map<String, StreamController<DeliveryStatus>> _deliveryControllers = {};
   ChatDelegate? delegate;
 
   ChatManager({required ChatSendingService service}) : _service = service;
@@ -57,6 +60,9 @@ class ChatManager {
   bool isSending(String clientId) => _activeSends.contains(clientId);
 
   DeliveryStatus? deliveryStatusFor(String clientId) => _deliveryStatus[clientId];
+
+  Stream<DeliveryStatus> deliveryStream(String clientId) =>
+      _controllerFor(clientId).stream;
 
   Future<void> sendMessage(String clientId, String body) async {
     if (_activeSends.contains(clientId)) return;
@@ -77,6 +83,7 @@ class ChatManager {
   void markDelivered(String clientId, DeliveryStatus status) {
     if (!_deliveryStatus.containsKey(clientId)) return;
     _deliveryStatus[clientId] = status;
+    _deliveryControllers[clientId]?.add(status);
     delegate?.onDeliveryReceipt(clientId, status);
   }
 
@@ -84,6 +91,17 @@ class ChatManager {
     _activeSends.remove(clientId);
     _deliveryStatus.remove(clientId);
   }
+
+  Future<void> dispose() async {
+    for (final controller in _deliveryControllers.values) {
+      await controller.close();
+    }
+    _deliveryControllers.clear();
+  }
+
+  StreamController<DeliveryStatus> _controllerFor(String clientId) =>
+      _deliveryControllers[clientId] ??=
+          StreamController<DeliveryStatus>.broadcast();
 }
 ```
 
@@ -189,11 +207,16 @@ The `Completer`-based stub is the key idea. `completerFor(clientId)` lets the *t
 
 ## Advanced Patterns
 
+Both of the following live in `code/chat_manager_test.dart` alongside the core suite — they run with the rest of the catalog.
+
 ### Testing Timeouts
 
+A `Completer` that is never completed is a hanging server. `Future.timeout` turns the hang into a `TimeoutException` the test can assert on, without waiting for a real network to give up.
+
 ```dart
+// See code/chat_manager_test.dart
 test('times out if the server never acknowledges a send', () async {
-  // Do not complete the stub — simulate a hanging send
+  // Do not complete the stub — simulate a hanging send.
   final send = manager.sendMessage('msg-1', 'hello');
 
   await expectLater(
@@ -205,12 +228,17 @@ test('times out if the server never acknowledges a send', () async {
 
 ### Testing Streams
 
+`deliveryStream(clientId)` exposes receipts as a broadcast stream. Subscribe before acting, drive the send to completion with the stub, and flush the microtask queue before asserting — stream events are delivered asynchronously even when they were added synchronously.
+
 ```dart
+// See code/chat_manager_test.dart
 test('emits delivery receipts as a stream', () async {
   final events = <DeliveryStatus>[];
   manager.deliveryStream('msg-1').listen(events.add);
 
-  await manager.sendMessage('msg-1', 'hello');
+  final send = manager.sendMessage('msg-1', 'hello');
+  stubService.completeSend('msg-1');
+  await send;
   manager.markDelivered('msg-1', DeliveryStatus.delivered);
   manager.markDelivered('msg-1', DeliveryStatus.read);
 
@@ -218,6 +246,8 @@ test('emits delivery receipts as a stream', () async {
   expect(events, equals([DeliveryStatus.delivered, DeliveryStatus.read]));
 });
 ```
+
+The `tearDown` in the suite calls `manager.dispose()`, which closes every stream controller — the same discipline [Chapter 10](../chapter10_memory_and_resources/README.md) tests directly.
 
 ---
 

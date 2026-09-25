@@ -1,3 +1,5 @@
+import 'dart:async';
+
 abstract class ChatDelegate {
   void onAcknowledged(String clientId);
   void onFailed(String clientId, Exception error);
@@ -14,6 +16,7 @@ class ChatManager {
   final ChatSendingService _service;
   final Map<String, DeliveryStatus> _deliveryStatus = {};
   final Set<String> _activeSends = {};
+  final Map<String, StreamController<DeliveryStatus>> _deliveryControllers = {};
   ChatDelegate? delegate;
 
   ChatManager({required ChatSendingService service}) : _service = service;
@@ -21,6 +24,10 @@ class ChatManager {
   bool isSending(String clientId) => _activeSends.contains(clientId);
 
   DeliveryStatus? deliveryStatusFor(String clientId) => _deliveryStatus[clientId];
+
+  /// Delivery receipts for [clientId], in the order they arrive.
+  Stream<DeliveryStatus> deliveryStream(String clientId) =>
+      _controllerFor(clientId).stream;
 
   Future<void> sendMessage(String clientId, String body) async {
     if (_activeSends.contains(clientId)) return;
@@ -41,6 +48,7 @@ class ChatManager {
   void markDelivered(String clientId, DeliveryStatus status) {
     if (!_deliveryStatus.containsKey(clientId)) return;
     _deliveryStatus[clientId] = status;
+    _deliveryControllers[clientId]?.add(status);
     delegate?.onDeliveryReceipt(clientId, status);
   }
 
@@ -48,4 +56,15 @@ class ChatManager {
     _activeSends.remove(clientId);
     _deliveryStatus.remove(clientId);
   }
+
+  Future<void> dispose() async {
+    for (final controller in _deliveryControllers.values) {
+      await controller.close();
+    }
+    _deliveryControllers.clear();
+  }
+
+  StreamController<DeliveryStatus> _controllerFor(String clientId) =>
+      _deliveryControllers[clientId] ??=
+          StreamController<DeliveryStatus>.broadcast();
 }
